@@ -52,12 +52,12 @@
           </button>
           <ul class="dropdown-menu p-2 " aria-labelledby="btnGroupDrop1">
            <div class="row row-cols-3 g-0">
-              <li><button type="button" class="btn w-75 btn-secondary mb-2" onclick="Trigonometry.sin()">sin</button></li>
-              <li><button type="button" class="btn w-75 btn-secondary" onclick="Trigonometry.cos()">cos</button></li>
-              <li><button type="button" class="btn w-75 btn-secondary" onclick="Trigonometry.tan()">tan</button></li>
-              <li><button type="button" class="btn w-75 btn-secondary" onclick="Trigonometry.sinh()">sinh</button></li>
-              <li><button type="button" class="btn w-75 btn-secondary" onclick="Trigonometry.cosh()">cosh</button></li>
-              <li><button type="button" class="btn w-75 btn-secondary" onclick="Trigonometry.tanh()">tanh</button></li>
+              <li><button type="button" class="btn w-75 btn-secondary mb-2" id="sin" onclick="getTrigonometryValue(this.id)">sin</button></li>
+              <li><button type="button" class="btn w-75 btn-secondary" id="cos" onclick="getTrigonometryValue(this.id)">cos</button></li>
+              <li><button type="button" class="btn w-75 btn-secondary" id="tan" onclick="getTrigonometryValue(this.id)">tan</button></li>
+              <li><button type="button" class="btn w-75 btn-secondary" id="sinh" onclick="getTrigonometryValue(this.id)">sinh</button></li>
+              <li><button type="button" class="btn w-75 btn-secondary" id="cosh" onclick="getTrigonometryValue(this.id)">cosh</button></li>
+              <li><button type="button" class="btn w-75 btn-secondary" id="tanh" onclick="getTrigonometryValue(this.id)">tanh</button></li>
            </div>
           </ul>
         </div>
@@ -70,9 +70,9 @@
             <ul class="dropdown-menu p-2" aria-labelledby="btnGroupDrop1">
               <div class="row row-cols-2 g-0">
                 <li><button type="button" class="btn w-75 btn-secondary mb-2" onclick="getAbsoluteValue()">|x|</button></li>
-                <li><button type="button" class="btn w-75 btn-secondary" onclick="MathFunction.getRand()">rand</button></li>
-                <li><button type="button" class="btn w-75 btn-secondary" onclick="MathFunction.getFloor()">⌊x⌋</button></li> 
-                <li><button type="button" class="btn w-75 btn-secondary" onclick="MathFunction.getCeil()">⌈x⌉</button></li> 
+                <li><button type="button" class="btn w-75 btn-secondary" id="rand" onclick="getMathFunctionValue(this.id)">rand</button></li>
+                <li><button type="button" class="btn w-75 btn-secondary" id="floor" onclick="getMathFunctionValue(this.id)">⌊x⌋</button></li> 
+                <li><button type="button" class="btn w-75 btn-secondary" id="ceil" onclick="getMathFunctionValue(this.id)">⌈x⌉</button></li> 
               </div>
             </ul>
           </div>
@@ -102,7 +102,7 @@
             <img src="https://img.icons8.com/material-outlined/24/null/clear-symbol--v1.png" />
           </button>
         </div>
-        <div class="col" >
+        <div class="col">
           <button type="button" class="btn w-100 btn-light" onclick="getPower(this.id)" id="findSquare">x<sup>2</sup></button>
         </div>
         <div class="col">

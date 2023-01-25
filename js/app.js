@@ -54,7 +54,12 @@ function clearEntry() {
 }
 
 function fixedToExponent() {
-  mainScreen.innerHTML += ".e+0";
+  var lastEntry = mainScreen.innerHTML.substr(mainScreen.innerHTML.length - 4);
+  if (lastEntry != ".e+0") {
+    mainScreen.innerHTML += ".e+0";
+  } else {
+    mainScreen.innerHTML = mainScreen.innerHTML;
+  }
 }
 
 function getConstant(clicked_id) {
@@ -160,6 +165,7 @@ function setPlusMinus() {
   }
 }
 
+//Validate user input
 function ValidateInput(value) {
   let lastEntry = mainScreen.innerHTML.slice(-1);
   let operators = ["%", "+", "-", "*", "/", ".", "^", ".e+0"];
@@ -173,6 +179,7 @@ function ValidateInput(value) {
   return true;
 }
 
+//Memory Operations Start
 function memoryStore() {
   const storedMemoryData = JSON.parse(localStorage.getItem("calcmemory"));
   if (mainScreen.innerHTML != "") {
@@ -241,36 +248,41 @@ function checkMemory() {
     memoryRecall.setAttribute("class", "btn");
   }
 }
+//Memory Operations End
 
-class MathFunction {
-  static getRand() {
-    mainScreen.innerHTML = Math.random();
-  }
-  static getFloor() {
-    mainScreen.innerHTML = Math.floor(mainScreen.innerHTML);
-  }
-  static getCeil() {
-    mainScreen.innerHTML = Math.ceil(mainScreen.innerHTML);
+function getMathFunctionValue(clicked_id) {
+  switch (clicked_id) {
+    case "rand":
+      mainScreen.innerHTML = Math.random();
+      break;
+    case "floor":
+      mainScreen.innerHTML = Math.floor(mainScreen.innerHTML);
+      break;
+    case "ceil":
+      mainScreen.innerHTML = Math.ceil(mainScreen.innerHTML);
+      break;
   }
 }
 
-class Trigonometry {
-  static sin() {
-    mainScreen.innerHTML = Math.sin(mainScreen.innerHTML);
-  }
-  static cos() {
-    mainScreen.innerHTML = Math.cos(mainScreen.innerHTML);
-  }
-  static tan() {
-    mainScreen.innerHTML = Math.tan(mainScreen.innerHTML);
-  }
-  static sinh() {
-    mainScreen.innerHTML = Math.sinh(mainScreen.innerHTML);
-  }
-  static cosh() {
-    mainScreen.innerHTML = Math.cosh(mainScreen.innerHTML);
-  }
-  static tanh() {
-    mainScreen.innerHTML = Math.tanh(mainScreen.innerHTML);
+function getTrigonometryValue(clicked_id) {
+  switch (clicked_id) {
+    case "sin":
+      mainScreen.innerHTML = Math.sin(mainScreen.innerHTML);
+      break;
+    case "cos":
+      mainScreen.innerHTML = Math.cos(mainScreen.innerHTML);
+      break;
+    case "tan":
+      mainScreen.innerHTML = Math.tan(mainScreen.innerHTML);
+      break;
+    case "sinh":
+      mainScreen.innerHTML = Math.sinh(mainScreen.innerHTML);
+      break;
+    case "cosh":
+      mainScreen.innerHTML = Math.cosh(mainScreen.innerHTML);
+      break;
+    case "tanh":
+      mainScreen.innerHTML = Math.tanh(mainScreen.innerHTML);
+      break;
   }
 }
