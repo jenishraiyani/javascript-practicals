@@ -1,1 +1,1 @@
-# javascript-practicals
+# Single Page Application
