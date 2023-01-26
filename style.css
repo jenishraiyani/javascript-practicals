@@ -1,18 +1,31 @@
- body {
-  height: 100%;
-  margin: 0;
+.profile img {
+  width: 70%;
+  margin-top: 160px;
 }
-section {
-    height: 100vh;
-  }
 
-.title{
-    margin-top: 400px;
+section {
+  height: 90vh;
 }
- 
-.title h1{
+
+.name {
+  margin-top: 300px;
+}
+
+.title h1 {
   font-size: 4rem;
 }
-.subtitle p{
-    font-size: 1rem;
+
+.subtitle p {
+  font-size: 1rem;
+}
+
+.about-title {
+  margin-top: 100px;
+
+}
+
+.slide img {
+  width: 55%;
+  height: 15%;
+  margin-left: 250px;
 }
