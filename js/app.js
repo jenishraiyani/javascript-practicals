@@ -70,7 +70,7 @@ function getConstant(clicked_id) {
       mainScreen.innerHTML = Math.PI;
       break;
     case "Euler":
-      mainScreen.innerHTML += Math.E;
+      mainScreen.innerHTML = Math.E;
       break;
   }
 }
