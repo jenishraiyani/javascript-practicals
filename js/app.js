@@ -8,6 +8,8 @@ checkMemory();
 function displayEntry(value) {
   if (mainScreen.innerHTML == "0" && value != ".") {
     mainScreen.innerHTML = value;
+  } else if (mainScreen.innerHTML.substr(mainScreen.innerHTML.length - 4) == ".e+0") {
+    mainScreen.innerHTML = mainScreen.innerHTML.slice(0, -1) + value;
   } else {
     if (ValidateInput(value)) {
       mainScreen.innerHTML += value;
@@ -63,14 +65,13 @@ function fixedToExponent() {
 }
 
 function getConstant(clicked_id) {
-  if (clicked_id == "PI" && mainScreen.innerHTML != "0") {
-    mainScreen.innerHTML += Math.PI;
-  } else if (clicked_id == "Euler" && mainScreen.innerHTML != "0") {
-    mainScreen.innerHTML += Math.E;
-  } else if (clicked_id == "PI" && mainScreen.innerHTML == "0") {
-    mainScreen.innerHTML = Math.PI;
-  } else {
-    mainScreen.innerHTML = Math.E;
+  switch (clicked_id) {
+    case "PI":
+      mainScreen.innerHTML = Math.PI;
+      break;
+    case "Euler":
+      mainScreen.innerHTML += Math.E;
+      break;
   }
 }
 
@@ -84,15 +85,6 @@ function getAbsoluteValue() {
 function getModulo() {
   if (ValidateInput("%")) {
     mainScreen.innerHTML += "%";
-  }
-}
-
-function getExponent() {
-  let exp = Math.exp(mainScreen.innerHTML);
-  if (isNaN(exp)) {
-    mainScreen.innerHTML = mainScreen.innerHTML;
-  } else {
-    mainScreen.innerHTML = exp;
   }
 }
 
