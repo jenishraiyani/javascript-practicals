@@ -1,70 +1,84 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="styles.css">
-    <title>Products Data</title>
-  </head>
-  <body>
-    <div class="container mt-5" id="product-table">
-        <h1 class="text-center mb-5">Products List</h1>
-        <div class="row text-end">
-            <div class="col-12 mb-3">
-                <a class="btn btn-primary" href="add-products.html" role="button">Add Product</a>
-            </div>
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <title>Products Data</title>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand ms-5" href="add-products.html">Add Product</a>
+  </nav>
+  <div class="container mt-2" id="product-table">
+    <div class="row text-end">
+      <div class="col-8 mb-3">
+        <input class="form-control mr-sm-2" type="search" onkeyup="searchProduct()" placeholder="Search products with id" aria-label="Search" id="search-id">
+      </div>
+      <div class="col-4 mb-3">
+        <div class="btn-group">
+          <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"> Sort </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" id="sort-id">Product Id</a></li>
+            <li><a class="dropdown-item" id="sort-name">Product Name</a></li>
+            <li><a class="dropdown-item" id="price-lh">Price (Low -> High)</a></li>
+            <li><a class="dropdown-item" id="price-hl">Price (High -> Low)</a></li>
+          </ul>
         </div>
-        <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th scope="col">Product ID</th>
-                <th scope="col">Product Name</th>
-                <th scope="col">Image</th>
-                <th scope="col">Price</th>
-                <th scope="col">Description</th>
-                <th scope="col">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="tbody">
-              
-            
-            </tbody>
-          </table>
+      </div>
     </div>
-    <div class="container mt-5 d-flex justify-content-center">
-        <form class="w-75 mt-5" id ="edit">
-            <h1 class="text-center m-3">Edit Product</h1>
-            <div class="form-group mb-3">
-              <label>Product Id</label>
-              <input type="text" class="form-control" placeholder="12348985" id="productId">
-            </div>
-            <div class="form-group mb-3">
-                <label>Product Name</label>
-                <input type="text" class="form-control" placeholder="Laptop" id="productName">
-            </div>
-            <div class="form-group mb-3">
-                <label>Image</label> <br>
-                <input type="file" class="form-control-file" id="image">
-                
-                <img alt="" id="productImage">
-            </div>
-            <div class="form-group mb-3">
-                <label>Price</label>
-                <input type="text" class="form-control" placeholder="$999" id="price">
-            </div>
-            <div class="form-group mb-3">
-              <label>Description</label>
-              <textarea class="form-control" rows="3" id="description"></textarea>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary" id="update">Update</button>
-            </div>
-          </form>
+    <div class="row row-cols-5" id="product-details">
+
     </div>
-    <script src="app.js"></script>
-  </body>
+  </div>
+
+  <div class="container mt-5 d-flex justify-content-center">
+    <form class="w-75 mt-5" id="edit">
+      <h1 class="text-center m-3">Edit Product</h1>
+      <div class="form-group mb-3">
+        <label>Product Id</label>
+        <input type="text" class="form-control" id="productId" disabled>
+      </div>
+      <div class="form-group mb-3">
+        <label>Product Name</label>
+        <input type="text" class="form-control" id="productName">
+      </div>
+      <div class="form-group mb-3">
+        <label>Image</label> <br>
+        <input type="file" class="form-control-file" id="image">
+        <img alt="" id="productImage">
+      </div>
+      <div class="form-group mb-3">
+        <label>Price</label>
+        <input type="text" class="form-control" id="price">
+      </div>
+      <div class="form-group mb-3">
+        <label>Description</label>
+        <textarea class="form-control" rows="3" id="description"></textarea>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary" id="update">Update</button>
+          </div>
+        </div>
+        <div class="col text-end">
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary" id="cancel">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script src="/jquery/jquery-3.6.3.min.js"></script>
+  <script src="app.js"></script>
+  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
