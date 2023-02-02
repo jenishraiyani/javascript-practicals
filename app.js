@@ -32,11 +32,7 @@ function Calculator() {
       }
     }
   } catch (err) {
-    errorMessage.innerHTML =
-      "<div class='alert alert-danger w-25' role='alert'>Invalid Input!!</div>";
-    window.setTimeout(function () {
-      errorMessage.innerHTML = "";
-    }, 3000);
+    showError("Please enter valid input");
   }
 }
 
@@ -76,7 +72,12 @@ function getConstant(clicked_id) {
 }
 
 function getDerivative() {
-  mainScreen.innerHTML = eval(1 / mainScreen.innerHTML);
+  if(mainScreen.innerHTML == 0){
+    showError("Cannot divide by zero");
+  }else{
+    mainScreen.innerHTML = eval(1 / mainScreen.innerHTML);
+  }
+ 
 }
 function getAbsoluteValue() {
   mainScreen.innerHTML = Math.abs(mainScreen.innerHTML);
@@ -91,11 +92,7 @@ function getModulo() {
 function getFactorial() {
   let factorialNumber = mainScreen.innerHTML;
   if (factorialNumber < 0) {
-    errorMessage.innerHTML =
-      "<div class='alert alert-danger w-25' role='alert'>Invalid Input!!</div>";
-    window.setTimeout(function () {
-      errorMessage.innerHTML = "";
-    }, 3000);
+    showError("Please enter valid input");
   } else if (factorialNumber == 0) {
     mainScreen.innerHTML = "1";
   } else {
@@ -277,4 +274,11 @@ function getTrigonometryValue(clicked_id) {
       mainScreen.innerHTML = Math.tanh(mainScreen.innerHTML);
       break;
   }
+}
+
+function showError(msg){
+  errorMessage.innerHTML = `<div class='alert alert-danger w-25' role='alert'>${msg}</div>`;
+    window.setTimeout(function () {
+      errorMessage.innerHTML = "";
+    }, 3000);
 }
