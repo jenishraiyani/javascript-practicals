@@ -8,7 +8,7 @@ function formData() {
   this.description = document.getElementById("description").value;
 }
  
-function addData() {
+function addProduct() {
   if (validateData() == true) {
     let userInput = new formData();
     let productsList;
@@ -41,7 +41,7 @@ function viewProduct() {
   let html = "";
   if (productsList != null) {
     productsList.forEach(function (element, index) {
-      html += `<div class="card me-3">
+      html += `<div class="card me-3 mb-3">
                   <img class="card-img-top" src="${element.image}" alt="Card image cap"><hr>
                   <div class="card-body">
                     <h5 class="card-title product-name">${element.productName}</h5>
@@ -65,9 +65,12 @@ function viewProduct() {
 
 function deleteProduct(clicked_id) {
   let productsList = JSON.parse(localStorage.getItem("productsList"));
+  let msg = "Are you sure to remove this product?";
   if (productsList != null) {
-    productsList.splice(clicked_id, 1);
-    localStorage.setItem("productsList", JSON.stringify(productsList));
+    if(confirm(msg) == true){
+      productsList.splice(clicked_id, 1);
+      localStorage.setItem("productsList", JSON.stringify(productsList));
+    }
   }
   viewProduct();
 }
@@ -108,12 +111,10 @@ function updateProduct(index) {
           localStorage.setItem("productsList", JSON.stringify(productsList));
         });
       }
-
-  };
-
+  }
   document.querySelector("#cancel").onclick = function () {
     viewProduct();
-  };
+  }
 }
 
 function validateData() {
@@ -155,14 +156,21 @@ function searchProduct() {
 //Sort product id
 $("#sort-id").click(function () {
   $("#product-details .card").sort(function (a, b) {
-      return $(a).find(".product-id").text() > $(b).find(".product-id").text() ? 1 : -1;
+      return $(a).find(".product-id").text() < $(b).find(".product-id").text() ? 1 : -1;
   }).appendTo("#product-details");
 });
 
-//Sort product name
-$("#sort-name").click(function () {
+//Sort product name (A to Z)
+$("#sort-name-AZ").click(function () {
   $("#product-details .card").sort(function (a, b) {
       return $(a).find(".product-name").text() > $(b).find(".product-name").text() ? 1 : -1;
+    }).appendTo("#product-details");
+});
+
+//Sort product name (Z to A)
+$("#sort-name-ZA").click(function () {
+  $("#product-details .card").sort(function (a, b) {
+      return $(a).find(".product-name").text() < $(b).find(".product-name").text() ? 1 : -1;
     }).appendTo("#product-details");
 });
 
