@@ -1,7 +1,10 @@
 let childScreen = document.getElementById("child-screen");
 let mainScreen = document.getElementById("output-screen");
 let errorMessage = document.getElementById("error-message");
+let memoryClear = document.getElementById("memory-clear");
+let memoryRecallElement = document.getElementById("memory-recall");
 let operators = ["%", "+", "-", "*", "/", ".", "^", ".e+0"];
+let errorMsg = "Please enter valid input";
 let memoryItems = [];
 checkMemory();
 
@@ -21,7 +24,7 @@ function displayEntry(value) {
     }
   }  
     else {
-    if (ValidateInput(value) && mainScreen.innerHTML != "") {
+    if (validateInput(value) && mainScreen.innerHTML != "") {
       mainScreen.innerHTML += value;
     } else {
       mainScreen.innerHTML = mainScreen.innerHTML.slice(0, -1) + value;
@@ -31,7 +34,7 @@ function displayEntry(value) {
 
 function displayOutput(value){
   if(isNaN(value) || !isFinite(value)){
-    showError("Invalid Input");
+    showError(errorMsg);
     mainScreen.innerHTML = "0";
   }else{
     mainScreen.innerHTML = value;
@@ -39,7 +42,7 @@ function displayOutput(value){
 }
 
 // Calculate
-function Calculator() {
+function calculator() {
   try {
     if (mainScreen.innerHTML != "" && !operators.includes(mainScreen.innerHTML.substr(mainScreen.innerHTML.length - 1))) {
       if (mainScreen.innerHTML.includes("^")) {
@@ -52,10 +55,10 @@ function Calculator() {
         displayOutput(count);
       }
     }else{
-      showError("Please enter valid input");
+      showError(errorMsg);
     }
   } catch (err) {
-    showError("Please enter valid input");
+    showError(errorMsg);
   }
 }
 
@@ -106,7 +109,8 @@ function getConstant(clicked_id) {
 
 function getDerivative() {
   if (mainScreen.innerHTML == 0) {
-    showError("Cannot divide by zero");
+    let msg = "Cannot divide by zero";
+    showError(msg);
   } else {
     childScreen.innerHTML = `1/(${mainScreen.innerHTML})`;
     displayOutput(eval(1 / mainScreen.innerHTML));
@@ -117,7 +121,7 @@ function getAbsoluteValue() {
 }
 
 function getModulo() {
-  if (ValidateInput("%")) {
+  if (validateInput("%")) {
     mainScreen.innerHTML += "%";
   }
 }
@@ -125,7 +129,7 @@ function getModulo() {
 function getFactorial() {
   let factorialNumber = mainScreen.innerHTML;
   if (factorialNumber < 0) {
-    showError("Please enter valid input");
+    showError(errorMsg);
   } else if (factorialNumber == 0) {
     mainScreen.innerHTML = "1";
   } else {
@@ -168,7 +172,7 @@ function getPower(clicked_id) {
       displayOutput(Math.pow(Math.E, mainScreen.innerHTML));
       break;
     case "findXYSqaure":
-      if (ValidateInput("^")) {
+      if (validateInput("^")) {
         mainScreen.innerHTML += "^";
       }
       break;
@@ -198,7 +202,7 @@ function setPlusMinus() {
 }
 
 //Validate user input
-function ValidateInput(value) {
+function validateInput(value) {
   let lastEntry = mainScreen.innerHTML.slice(-1);
   if (operators.includes(value)) {
     if (operators.includes(lastEntry)) {
@@ -210,22 +214,28 @@ function ValidateInput(value) {
   return true;
 }
 
+function disableButton(){
+    memoryClear.className += " disabled";
+    memoryRecallElement.className += " disabled";
+} 
+
+function enableButton(){
+    memoryClear.setAttribute("class", "btn");
+    memoryRecallElement.setAttribute("class", "btn");
+} 
+
 //Memory Operations Start
 function memoryStore() {
   const storedMemoryData = JSON.parse(localStorage.getItem("calcmemory"));
   if (mainScreen.innerHTML != "") {
-    let memoryClear = document.getElementById("memory-clear");
-    let memoryRecall = document.getElementById("memory-recall");
     if (storedMemoryData != null) {
       storedMemoryData.push(mainScreen.innerHTML);
       localStorage.setItem("calcmemory", JSON.stringify(storedMemoryData));
-      memoryClear.setAttribute("class", "btn");
-      memoryRecall.setAttribute("class", "btn");
+      enableButton();
     } else {
       memoryItems.push(mainScreen.innerHTML);
       localStorage.setItem("calcmemory", JSON.stringify(memoryItems));
-      memoryClear.setAttribute("class", "btn");
-      memoryRecall.setAttribute("class", "btn");
+      enableButton();
     }
   }
 }
@@ -264,16 +274,12 @@ function memoryRecall() {
 }
 
 function checkMemory() {
-  const storedMemoryData = JSON.parse(localStorage.getItem("calcmemory"));
-  let memoryClear = document.getElementById("memory-clear");
-  let memoryRecall = document.getElementById("memory-recall");
-  if (storedMemoryData == null) {
-    memoryClear.className += " disabled";
-    memoryRecall.className += " disabled";
-  } else {
-    memoryClear.setAttribute("class", "btn");
-    memoryRecall.setAttribute("class", "btn");
-  }
+    const storedMemoryData = JSON.parse(localStorage.getItem("calcmemory"));
+    if (storedMemoryData == null) {
+        disableButton();
+    } else {
+       enableButton();
+    }
 }
 //Memory Operations End
 
