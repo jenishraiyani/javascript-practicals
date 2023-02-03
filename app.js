@@ -1,3 +1,4 @@
+let productContent = document.getElementById("product-details");
 viewProduct();
 
 function formData() {
@@ -9,7 +10,7 @@ function formData() {
 }
  
 function addProduct() {
-  if (validateData() == true) {
+  if (validateData() == true && imageValidation() == true && validateId() == true) {
     let userInput = new formData();
     let productsList;
     let image = userInput.image.files[0];
@@ -60,7 +61,7 @@ function viewProduct() {
                 </div>`;
     });
   }
-  document.getElementById("product-details").innerHTML = html;
+  productContent.innerHTML = html;
 }
 
 function deleteProduct(clicked_id) {
@@ -91,25 +92,29 @@ function updateProduct(index) {
     let newImage = document.getElementById("image");
     let setInput = new formData();
       if (newImage.value == "") {
-        productsList[index].productId = setInput.id;
-        productsList[index].productName = setInput.name;
-        productsList[index].image = document.getElementById("productImage").src;
-        productsList[index].price = setInput.price;
-        productsList[index].description = setInput.description;
-        localStorage.setItem("productsList", JSON.stringify(productsList));
-      } else {
-        let image = newImage.files[0];
-        let reader = new FileReader();
-        reader.readAsDataURL(image);
-        reader.addEventListener("load", () => {
-          url = reader.result;
+        if(validateData() == true){
           productsList[index].productId = setInput.id;
           productsList[index].productName = setInput.name;
-          productsList[index].image = url;
+          productsList[index].image = document.getElementById("productImage").src;
           productsList[index].price = setInput.price;
           productsList[index].description = setInput.description;
           localStorage.setItem("productsList", JSON.stringify(productsList));
-        });
+        }
+      } else {
+        if(validateData() == true && imageValidation() == true){
+          let image = newImage.files[0];
+          let reader = new FileReader();
+          reader.readAsDataURL(image);
+          reader.addEventListener("load", () => {
+            url = reader.result;
+            productsList[index].productId = setInput.id;
+            productsList[index].productName = setInput.name;
+            productsList[index].image = url;
+            productsList[index].price = setInput.price;
+            productsList[index].description = setInput.description;
+            localStorage.setItem("productsList", JSON.stringify(productsList));
+          });
+        }
       }
   }
   document.querySelector("#cancel").onclick = function () {
@@ -117,20 +122,33 @@ function updateProduct(index) {
   }
 }
 
-function validateData() {
+function validateId() {
   let userInput = new formData();
   let productsList = JSON.parse(localStorage.getItem("productsList")) || [];
   let data_filter = productsList.filter((element) => element.productId == userInput.id);
   let productLength = Object.keys(data_filter).length;
-  let fileExtensions = userInput.image.value;
-  let allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
-  if (userInput.id == "" || userInput.name == "" || userInput.image == "" || userInput.price == "" ||userInput.description == "") {
-    alert("All fields are required");
-    return false;
-  } else if (productLength > 0) {
+  if (productLength > 0) {
     alert("Please enter unique product id");
     return false;
-  } else if (!allowedExtensions.exec(fileExtensions)) {
+  } else {
+    return true;
+  }
+}
+
+function validateData(){
+  let userInput = new formData();
+  if (userInput.name == "" || userInput.image == "" || userInput.price == "" || userInput.description == "") {
+    alert("All fields are required");
+    return false;
+  } else {
+    return true;
+  }
+}
+function imageValidation(){
+  let userInput = new formData();
+  let fileExtensions = userInput.image.value;
+  let allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+  if (!allowedExtensions.exec(fileExtensions)) {
     alert("Please upload .jpeg/.jpg/.png file only.");
     return false;
   } else {
@@ -149,6 +167,7 @@ function searchProduct() {
       cards[i].style.display = "";
     } else {
       cards[i].style.display = "none";
+      productContent.innerHTML = "Product not found..";
     }
   }
 }
