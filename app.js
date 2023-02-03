@@ -79,8 +79,14 @@ function clearEntry() {
 }
 
 function fixedToExponent() {
-  var lastEntry = mainScreen.innerHTML.substr(mainScreen.innerHTML.length - 4);
-  if (lastEntry != ".e+0") {
+  var lastFourEntry = mainScreen.innerHTML.substr(mainScreen.innerHTML.length - 4);
+  let lastEntry = mainScreen.innerHTML.slice(-1);
+  if (lastEntry == ".") {
+    mainScreen.innerHTML += "e+0";
+  }else if(operators.includes(lastEntry)){
+    mainScreen.innerHTML = mainScreen.innerHTML;
+  }
+  else if (lastFourEntry != ".e+0") {
     mainScreen.innerHTML += ".e+0";
   } else {
     mainScreen.innerHTML = mainScreen.innerHTML;
@@ -102,6 +108,7 @@ function getDerivative() {
   if (mainScreen.innerHTML == 0) {
     showError("Cannot divide by zero");
   } else {
+    childScreen.innerHTML = `1/(${mainScreen.innerHTML})`;
     displayOutput(eval(1 / mainScreen.innerHTML));
   }
 }
