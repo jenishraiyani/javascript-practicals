@@ -8,6 +8,7 @@ let productImage = document.getElementById("image");
 let productPrice = document.getElementById("price");
 let productDescription = document.getElementById("description");
 let displayImage = document.getElementById("productImage");
+let specialChars = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
 
 viewProduct();
 
@@ -161,11 +162,14 @@ function validateId() {
 
 function validateData() {
   let userInput = new formData();
-  if (!userInput.name.match(/\S/) || !userInput.price.match(/\S/) || !userInput.description.match(/\S/)) {
-    let msg = "All fields are required";
+  if(specialChars.test(userInput.id) || specialChars.test(userInput.price) || specialChars.test(userInput.name) || specialChars.test(userInput.description) ) {
+    let msg = "Special characters or white space is not allowed!!";
     alert(msg);
     return false;
-  } else {
+  }else if(!userInput.id || !userInput.name || !userInput.price || !userInput.description){
+    return false;
+  }
+  else {
     return true;
   }
 }
