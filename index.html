@@ -16,7 +16,7 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand ms-5" href="add-products.html">Add Product</a>
   </nav>
-  <div class="container mt-2" id="product-table">
+  <div class="container mt-2" id="product-card">
     <div class="row text-end">
       <div class="col-8 mb-3">
         <input class="form-control mr-sm-2" type="search" onkeyup="searchProduct()" placeholder="Search products with id" aria-label="Search" id="search-id">
@@ -25,11 +25,12 @@
         <div class="btn-group">
           <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"> Sort </button>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" id="sort-id">Product Id</a></li>
-            <li><a class="dropdown-item" id="sort-name-AZ">Product Name (A to Z)</a></li>
-            <li><a class="dropdown-item" id="sort-name-ZA">Product Name (Z to A)</a></li>
-            <li><a class="dropdown-item" id="price-lh">Price (Low -> High)</a></li>
-            <li><a class="dropdown-item" id="price-hl">Price (High -> Low)</a></li>
+            <li><a class="dropdown-item" id="sort-id-ascending" onclick="sorting(this.id)">Product Id (Ascending)</a></li>
+            <li><a class="dropdown-item" id="sort-id-descending" onclick="sorting(this.id)">Product Id (Descending)</a></li>
+            <li><a class="dropdown-item" id="sort-name-az" onclick="sorting(this.id)">Product Name (A to Z)</a></li>
+            <li><a class="dropdown-item" id="sort-name-za" onclick="sorting(this.id)">Product Name (Z to A)</a></li>
+            <li><a class="dropdown-item" id="price-lh" onclick="sorting(this.id)">Price (Low -> High)</a></li>
+            <li><a class="dropdown-item" id="price-hl" onclick="sorting(this.id)">Price (High -> Low)</a></li>
           </ul>
         </div>
       </div>
@@ -39,7 +40,7 @@
     </div>
   </div>
 
-  <div class="container mt-5 d-flex justify-content-center">
+  <div class="container d-flex justify-content-center">
     <form class="w-75 mt-5" id="edit">
       <h1 class="text-center m-3">Edit Product</h1>
       <div class="form-group mb-3">
