@@ -6,6 +6,7 @@ let memoryRecallElement = document.getElementById("memory-recall");
 let operators = ["%", "+", "-", "*", "/", ".", "^", ".e+0"];
 let errorMsg = "Please enter valid input";
 let memoryItems = [];
+let localMemory = "calcmemory";
 checkMemory();
 
 // Display user input on screen
@@ -116,13 +117,15 @@ function getDerivative() {
     displayOutput(eval(1 / mainScreen.innerHTML));
   }
 }
+
 function getAbsoluteValue() {
   displayOutput(Math.abs(mainScreen.innerHTML));
 }
 
 function getModulo() {
-  if (validateInput("%")) {
-    mainScreen.innerHTML += "%";
+  let modulo = "%";
+  if (validateInput(modulo)) {
+    mainScreen.innerHTML += modulo;
   }
 }
 
@@ -172,8 +175,9 @@ function getPower(clicked_id) {
       displayOutput(Math.pow(Math.E, mainScreen.innerHTML));
       break;
     case "findXYSqaure":
-      if (validateInput("^")) {
-        mainScreen.innerHTML += "^";
+      let exponent = "^";
+      if (validateInput(exponent)) {
+        mainScreen.innerHTML += exponent;
       }
       break;
   }
@@ -226,55 +230,59 @@ function enableButton(){
 
 //Memory Operations Start
 function memoryStore() {
-  const storedMemoryData = JSON.parse(localStorage.getItem("calcmemory"));
+  const storedMemoryData = JSON.parse(localStorage.getItem(localMemory));
   if (mainScreen.innerHTML != "") {
     if (storedMemoryData != null) {
       storedMemoryData.push(mainScreen.innerHTML);
-      localStorage.setItem("calcmemory", JSON.stringify(storedMemoryData));
+      localStorage.setItem(localMemory, JSON.stringify(storedMemoryData));
       enableButton();
     } else {
       memoryItems.push(mainScreen.innerHTML);
-      localStorage.setItem("calcmemory", JSON.stringify(memoryItems));
+      localStorage.setItem(localMemory, JSON.stringify(memoryItems));
       enableButton();
     }
   }
 }
 
 function memoryPlusSubtract(clicked_id) {
-  const storedMemoryData = JSON.parse(localStorage.getItem("calcmemory"));
   if (mainScreen.innerHTML != "") {
-    if (storedMemoryData != null) {
-      let lastItems = storedMemoryData.length - 1;
       switch (clicked_id) {
         case "memory-plus":
-          let replacePlus = eval(storedMemoryData[lastItems] + "+" + mainScreen.innerHTML);
-          storedMemoryData[lastItems] = replacePlus;
-          localStorage.setItem("calcmemory", JSON.stringify(storedMemoryData));
+          let plus = "+";
+          memoryPlusSub(plus)
           break;
         case "memory-subtract":
-          let replaceSubtract = eval(storedMemoryData[lastItems] + "-" + mainScreen.innerHTML);
-          storedMemoryData[lastItems] = replaceSubtract;
-          localStorage.setItem("calcmemory", JSON.stringify(storedMemoryData));
+          let subtract = "-";
+          memoryPlusSub(subtract)
           break;
         default:
-          localStorage.removeItem("calcmemory");
+          localStorage.removeItem(localMemory);
           checkMemory();
           break;
       }
-    } else {
-      return false;
     }
+}
+
+function memoryPlusSub(operators){
+  const storedMemoryData = JSON.parse(localStorage.getItem(localMemory));
+  if (storedMemoryData != null) {
+      let lastItems = storedMemoryData.length - 1;
+      let replaceData = eval(storedMemoryData[lastItems] + operators + mainScreen.innerHTML);
+      storedMemoryData[lastItems] = replaceData;
+      localStorage.setItem(localMemory, JSON.stringify(storedMemoryData));
+  } else {
+    return false;
   }
 }
 
 function memoryRecall() {
-  let retrievedMemoryData = localStorage.getItem("calcmemory");
+  let retrievedMemoryData = localStorage.getItem(localMemory);
   let memoryData = JSON.parse(retrievedMemoryData);
   mainScreen.innerHTML = memoryData[memoryData.length - 1];
 }
 
 function checkMemory() {
-    const storedMemoryData = JSON.parse(localStorage.getItem("calcmemory"));
+    const storedMemoryData = JSON.parse(localStorage.getItem(localMemory));
     if (storedMemoryData == null) {
         disableButton();
     } else {
