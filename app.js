@@ -97,8 +97,8 @@ function fixedToExponent() {
   }
 }
 
-function getConstant(clicked_id) {
-  switch (clicked_id) {
+function getConstant(clickedId) {
+  switch (clickedId) {
     case "PI":
       mainScreen.innerHTML = Math.PI;
       break;
@@ -144,8 +144,8 @@ function getFactorial() {
   }
 }
 
-function getPower(clicked_id) {
-  switch (clicked_id) {
+function getPower(clickedId) {
+  switch (clickedId) {
     case "findSquare":
       childScreen.innerHTML = `sqr(${mainScreen.innerHTML})`;
       displayOutput(Math.pow(mainScreen.innerHTML, 2));
@@ -183,8 +183,8 @@ function getPower(clicked_id) {
   }
 }
 
-function getLog(clicked_id) {
-  switch (clicked_id) {
+function getLog(clickedId) {
+  switch (clickedId) {
     case "logTenBase":
         childScreen.innerHTML = `log(${mainScreen.innerHTML})`;
         displayOutput(Math.log10(mainScreen.innerHTML));
@@ -244,9 +244,9 @@ function memoryStore() {
   }
 }
 
-function memoryPlusSubtract(clicked_id) {
+function memoryPlusSubtract(clickedId) {
   if (mainScreen.innerHTML != "") {
-      switch (clicked_id) {
+      switch (clickedId) {
         case "memory-plus":
           let plus = "+";
           memoryPlusSub(plus)
@@ -283,7 +283,7 @@ function memoryRecall() {
 
 function checkMemory() {
     const storedMemoryData = JSON.parse(localStorage.getItem(localMemory));
-    if (storedMemoryData == null) {
+    if(storedMemoryData == null) {
         disableButton();
     } else {
        enableButton();
@@ -291,8 +291,8 @@ function checkMemory() {
 }
 //Memory Operations End
 
-function getMathFunctionValue(clicked_id) {
-  switch (clicked_id) {
+function getMathFunctionValue(clickedId) {
+  switch (clickedId) {
     case "rand":
       displayOutput(Math.random());
       break;
@@ -307,8 +307,8 @@ function getMathFunctionValue(clicked_id) {
   }
 }
 
-function getTrigonometryValue(clicked_id) {
-  switch (clicked_id) {
+function getTrigonometryValue(clickedId) {
+  switch (clickedId) {
     case "sin":
       childScreen.innerHTML = `sin(${mainScreen.innerHTML})`;
       displayOutput(Math.sin(mainScreen.innerHTML));
