@@ -164,10 +164,7 @@ function imageUrl(input) {
 function validateNameId() {
   let userInput = new formData();
   let productsList = productData || [];
-  let filterData = productsList.filter(
-    (element) =>
-      element.productId == userInput.id || element.productName == userInput.name
-  );
+  let filterData = productsList.filter((element) => element.productId == userInput.id || element.productName == userInput.name);
   let productLength = Object.keys(filterData).length;
   if (productLength > 0) {
     let msg = "Product ID and Name should be unique";
@@ -203,9 +200,7 @@ function validateData() {
 function nameValidation(index) {
   let userInput = new formData();
   let productsList = productData || [];
-  let filterData = productsList.filter((element) =>
-      element.productName.toLowerCase() === userInput.name.toLowerCase()
-  );
+  let filterData = productsList.filter((element) => element.productName.toLowerCase() === userInput.name.toLowerCase());
   let productLength = Object.keys(filterData).length;
   if (productsList[index].productName === userInput.name) {
     return true;
@@ -239,11 +234,7 @@ function searchProduct() {
   cards = document.getElementsByClassName("card");
   for (var i = 0; i < cards.length; i++) {
     let id = cards[i].querySelector(".product-id");
-    if (id.innerText.toUpperCase().indexOf(filter) > -1) {
-      cards[i].style.display = "";
-    } else {
-      cards[i].style.display = "none";
-    }
+    id.innerText.toUpperCase().indexOf(filter) > -1 ? cards[i].style.display = "" :  cards[i].style.display = "none";
   }
 }
 
