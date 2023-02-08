@@ -269,17 +269,13 @@ function sorting(clickedId) {
 }
 
 function ascendingSort(productsList, category) {
-  let sortedList = productsList.sort((p1, p2) =>
-    p1[category] > p2[category] ? 1 : p1[category] < p2[category] ? -1 : 0
-  );
+  let sortedList = productsList.sort((p1, p2) =>p1[category] > p2[category] ? 1 : p1[category] < p2[category] ? -1 : 0);
   productData = sortedList;
   displayProduct(productData);
 }
 
 function descendingSort(productsList, category) {
-  let sortedList = productsList.sort((p1, p2) =>
-    p1[category] < p2[category] ? 1 : p1[category] > p2[category] ? -1 : 0
-  );
+  let sortedList = productsList.sort((p1, p2) => p1[category] < p2[category] ? 1 : p1[category] > p2[category] ? -1 : 0);
   productData = sortedList;
   displayProduct(productData);
 }
