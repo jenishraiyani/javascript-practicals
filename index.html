@@ -33,7 +33,7 @@
           <li><a class="dropdown-item" id="price-lh" onclick="sorting(this.id)">Price (Low -> High)</a></li>
           <li><a class="dropdown-item" id="price-hl" onclick="sorting(this.id)">Price (High -> Low)</a></li>
         </ul>
-        <button type="button" class="btn btn-light ms-3" id="add-product" aria-expanded="false" data-toggle="modal" data-target="#formModal">Add Product</button>
+        <button type="button" class="btn btn-light ms-3" id="add-product" aria-expanded="false" data-toggle="modal" data-target="#form-modal">Add Product</button>
       </div>
     </div>
   </div>
@@ -44,7 +44,7 @@
   </div>
   <!-- Product List Ended -->
   <!-- Form Modal -->
-  <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+  <div class="modal fade" id="form-modal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -55,19 +55,19 @@
             <div class="form-group row mb-3">
               <label class="col-4 col-form-label">Product Id:</label>
               <div class="col-8">
-                <input type="number" class="form-control" id="product-id" min="0">
+                <input type="number" class="form-control" id="product-id" min="0" required>
               </div>
             </div>
             <div class="form-group row mb-3">
               <label class="col-4 col-form-label">Product Name:</label>
               <div class="col-8">
-                <input type="text" class="form-control" id="product-name">
+                <input type="text" class="form-control" id="product-name" required>
               </div>
             </div>
             <div class="form-group row">
               <label class="col-4 col-form-label">Image:</label>
               <div class="col-8">
-                <input type="file" class="form-control-file" id="product-image" onchange="imageUrl(this)">
+                <input type="file" class="form-control-file" id="product-image" onchange="imageUrl(this)" required>
               </div>
             </div>
             <div class="form-group">
@@ -76,13 +76,13 @@
             <div class="form-group row mb-3">
               <label class="col-4 col-form-label">Price:</label>
               <div class="col-8">
-                <input type="number" class="form-control" id="product-price" min="0">
+                <input type="number" class="form-control" id="product-price" min="0" required>
               </div>
             </div>
             <div class="form-group row mb-3">
               <label class="col-4 col-form-label">Description:</label>
               <div class="col-8">
-                <textarea class="form-control" rows="1" id="product-description"></textarea>
+                <textarea class="form-control" rows="1" id="product-description" required></textarea>
               </div>
             </div>
             <input type="number" class="form-control" id="product-index" hidden>
@@ -99,7 +99,7 @@
     <div class="message">
       <div class="toast bg-success" data-autohide="false">
         <div class="toast-body text-light">
-            Product details updated successfully
+            Product Details Updated Successfully
         </div>
     </div>
   </div>

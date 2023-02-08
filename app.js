@@ -9,8 +9,9 @@ let productImage = document.getElementById("product-image");
 let productPrice = document.getElementById("product-price");
 let productDescription = document.getElementById("product-description");
 let displayImage = document.getElementById("display-image");
-let specialChars = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
-
+let formModal = document.getElementById("form-modal");
+let specialChars = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,<>\/?~\\++]/;
+var productData = JSON.parse(localStorage.getItem(productDetails));
 viewProduct();
 
 function formData() {
@@ -21,18 +22,13 @@ function formData() {
   this.description = productDescription.value;
 }
 
-function productList(){
-  let productData = JSON.parse(localStorage.getItem(productDetails));
-  return productData;
-}
-
 document.querySelector("#add-product").onclick = function () {
   btnText.innerHTML = "Submit";
   clearForm();
   formTitle.innerHTML = "Add Product";
 };
 
-function clearForm(){
+function clearForm() {
   productId.disabled = false;
   productId.value = "";
   productName.value = "";
@@ -44,12 +40,10 @@ function clearForm(){
 }
 
 document.querySelector("#btn-operation").onclick = function () {
-  if(this.innerHTML == "Submit"){
+  if (btnText.innerHTML == "Submit") {
     addProduct();
-  }else{
-    updateProduct(objectIndex.value);
   }
-}
+};
 
 function displayProduct(productsList) {
   let html = "";
@@ -64,7 +58,7 @@ function displayProduct(productsList) {
                     <p class="card-text">${element.description}</p>
                     <div class="row">
                       <div class=col>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formModal" onclick="updateProduct(${index})">Edit</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#form-modal" onclick="updateProduct(${index})">Edit</button>
                       </div>
                       <div class=col>
                         <button type="button" class="btn btn-danger" onclick=deleteProduct(${index})>Delete</button>
@@ -79,36 +73,35 @@ function displayProduct(productsList) {
 
 //CRUD functions
 function addProduct() {
-  if (validateData() == true && validateNameId() == true) {
+  if (validateData() && imageValidation() && validateNameId()) {
     let userInput = new formData();
     let productsList;
-      if (localStorage.getItem(productDetails) == null) {
-        productsList = [];
-      } else {
-        productsList = productList();
-      }
-      productsList.push({
-        productId: parseInt(userInput.id),
-        productName: userInput.name,
-        image: displayImage.src,
-        price: parseInt(userInput.price),
-        description: userInput.description,
-      });
-      localStorage.setItem(productDetails, JSON.stringify(productsList));
-      window.location.href = "index.html";
+    if (localStorage.getItem(productDetails) == null) {
+      productsList = [];
+    } else {
+      productsList = productData;
+    }
+    productsList.push({
+      productId: parseInt(userInput.id),
+      productName: userInput.name,
+      image: displayImage.src,
+      price: Number(userInput.price).toFixed(2),
+      description: userInput.description,
+    });
+    localStorage.setItem(productDetails, JSON.stringify(productsList));
+    window.location.href = "index.html";
   }
 }
 
 function viewProduct() {
-  let productsList = productList();
-  displayProduct(productsList);
+  displayProduct(productData);
 }
 
 function deleteProduct(clickedId) {
-  let productsList = productList();
+  let productsList = productData;
   let msg = "Are you sure to remove this product?";
   if (productsList != null) {
-    if (confirm(msg) == true) {
+    if (confirm(msg)) {
       productsList.splice(clickedId, 1);
       localStorage.setItem(productDetails, JSON.stringify(productsList));
     }
@@ -120,7 +113,7 @@ function updateProduct(index) {
   btnText.innerHTML = "Update";
   formTitle.innerHTML = "Update Product";
   productId.disabled = true;
-  let productsList = productList();
+  let productsList = productData;
   if (productsList != null) {
     productId.value = productsList[index].productId;
     productName.value = productsList[index].productName;
@@ -130,32 +123,39 @@ function updateProduct(index) {
     objectIndex.value = index;
   }
   document.querySelector("#btn-operation").onclick = function () {
-      if (validateData() == true) {
+    if (btnText.innerHTML == "Update") {
+      if (validateData() && nameValidation(index)) {
         uploadDetails(index);
       }
+    } else {
+      addProduct();
     }
+  };
 }
 
-function uploadDetails(index){
+function uploadDetails(index) {
   let setInput = new formData();
-  let productsList = productList();
+  let productsList = productData;
   productsList[index].productId = parseInt(setInput.id);
   productsList[index].productName = setInput.name;
   productsList[index].image = displayImage.src;
-  productsList[index].price = parseInt(setInput.price);
+  productsList[index].price = Number(setInput.price).toFixed(2);
   productsList[index].description = setInput.description;
   localStorage.setItem(productDetails, JSON.stringify(productsList));
-  $('.toast').toast('show');
+  $("#form-modal").hide();
+  $(".modal-backdrop").hide();
+  $(".toast").toast("show");
+  viewProduct();
 }
 
 function imageUrl(input) {
-  if(imageValidation() == true){
+  if (imageValidation()) {
     if (input.files && input.files[0]) {
       var reader = new FileReader();
-      reader.onload = function (e) { 
-        displayImage.setAttribute("src",e.target.result);
+      reader.onload = function (e) {
+        displayImage.setAttribute("src", e.target.result);
       };
-      reader.readAsDataURL(input.files[0]); 
+      reader.readAsDataURL(input.files[0]);
     }
   }
 }
@@ -163,11 +163,14 @@ function imageUrl(input) {
 //validation functions
 function validateNameId() {
   let userInput = new formData();
-  let productsList =  productList() || [];
-  let filterData = productsList.filter((element) => element.productId == userInput.id || element.productName == userInput.name);
+  let productsList = productData || [];
+  let filterData = productsList.filter(
+    (element) =>
+      element.productId == userInput.id || element.productName == userInput.name
+  );
   let productLength = Object.keys(filterData).length;
   if (productLength > 0) {
-    let msg = "Product Name and ID should be unique";
+    let msg = "Product ID and Name should be unique";
     alert(msg);
     return false;
   } else {
@@ -177,15 +180,40 @@ function validateNameId() {
 
 function validateData() {
   let userInput = new formData();
-  if(specialChars.test(userInput.id) || specialChars.test(userInput.price) || specialChars.test(userInput.name) || specialChars.test(userInput.description)) {
-    let msg = "Special characters or white space is not allowed!!";
+  let msg = "Special characters or empty field is not allowed!!";
+  if (specialChars.test(userInput.id) || specialChars.test(userInput.price) || specialChars.test(userInput.name)) {
     alert(msg);
     return false;
-  }else if(!userInput.id || !userInput.name || !userInput.price || !userInput.description){
-    let msg = "All fields are required";
+  } else if (!userInput.id || !userInput.name || !userInput.price || userInput.description.trim() === "") {
     alert(msg);
     return false;
-  }else {
+  } else if (userInput.name.length <= 3) {
+    msg = "Product name length should be greater than 3";
+    alert(msg);
+    return false;
+  } else if (displayImage.src == "" && userInput.image.value == "") {
+    msg = "Please select image";
+    alert(msg);
+    return false;
+  } else {
+    return true;
+  }
+}
+
+function nameValidation(index) {
+  let userInput = new formData();
+  let productsList = productData || [];
+  let filterData = productsList.filter((element) =>
+      element.productName.toLowerCase() === userInput.name.toLowerCase()
+  );
+  let productLength = Object.keys(filterData).length;
+  if (productsList[index].productName === userInput.name) {
+    return true;
+  } else if (productLength > 0) {
+    let msg = "Product Name should be unique";
+    alert(msg);
+    return false;
+  } else {
     return true;
   }
 }
@@ -228,33 +256,39 @@ function sorting(clickedId) {
   if (productsList != null) {
     switch (clickedId) {
       case "sort-id-ascending":
-        ascendingSort(productsList,productId);
+        ascendingSort(productsList, productId);
         break;
       case "sort-id-descending":
-        descendingSort(productsList,productId);
+        descendingSort(productsList, productId);
         break;
       case "sort-name-az":
-        ascendingSort(productsList,productName);
+        ascendingSort(productsList, productName);
         break;
       case "sort-name-za":
-        descendingSort(productsList,productName);
+        descendingSort(productsList, productName);
         break;
       case "price-lh":
-        ascendingSort(productsList,productPrice);
+        ascendingSort(productsList, productPrice);
         break;
       case "price-hl":
-        descendingSort(productsList,productPrice);
+        descendingSort(productsList, productPrice);
         break;
     }
   }
 }
 
 function ascendingSort(productsList, category) {
-  let sortedList = productsList.sort((p1, p2) => p1[category] > p2[category] ? 1 : p1[category] < p2[category] ? -1 : 0);
-  displayProduct(sortedList);
+  let sortedList = productsList.sort((p1, p2) =>
+    p1[category] > p2[category] ? 1 : p1[category] < p2[category] ? -1 : 0
+  );
+  productData = sortedList;
+  displayProduct(productData);
 }
 
 function descendingSort(productsList, category) {
-  let sortedList = productsList.sort((p1, p2) => p1[category] < p2[category] ? 1 : p1[category] > p2[category] ? -1 : 0);
-  displayProduct(sortedList);
+  let sortedList = productsList.sort((p1, p2) =>
+    p1[category] < p2[category] ? 1 : p1[category] > p2[category] ? -1 : 0
+  );
+  productData = sortedList;
+  displayProduct(productData);
 }
