@@ -11,6 +11,7 @@ let productDescription = document.getElementById("product-description");
 let displayImage = document.getElementById("display-image");
 let formModal = document.getElementById("form-modal");
 let specialChars = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,<>\/?~\\++]/;
+let productNameError = "Product name should be unique";
 let productData = JSON.parse(localStorage.getItem(productDetails));
 viewProduct();
 
@@ -164,11 +165,16 @@ function imageUrl(input) {
 function validateNameId() {
   let userInput = new formData();
   let productsList = productData || [];
-  let filterData = productsList.filter((element) => element.productId == userInput.id || element.productName == userInput.name);
-  let productLength = Object.keys(filterData).length;
-  if (productLength > 0) {
-    let msg = "Product ID and Name should be unique";
+  let checkProductId = productsList.filter((element) => element.productId == userInput.id);
+  let checkProductName = productsList.filter((element) => element.productName == userInput.name);
+  let productIdLength = Object.keys(checkProductId).length;
+  let productNameLength = Object.keys(checkProductName).length;
+  if (productIdLength > 0) {
+    let msg = "Product id should be unique";
     alert(msg);
+    return false;
+  }else if(productNameLength > 0){
+    alert(productNameError);
     return false;
   } else {
     return true;
@@ -205,8 +211,7 @@ function nameValidation(index) {
   if (productsList[index].productName === userInput.name) {
     return true;
   } else if (productLength > 0) {
-    let msg = "Product Name should be unique";
-    alert(msg);
+    alert(productNameError);
     return false;
   } else {
     return true;
