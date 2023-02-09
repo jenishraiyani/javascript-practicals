@@ -12,24 +12,13 @@ checkMemory();
 // Display user input on screen
 function displayEntry(value) {
   if (mainScreen.innerHTML == "0" && value != ".") {
-    if (operators.includes(value)) {
-      mainScreen.innerHTML += value;
-    } else {
-      mainScreen.innerHTML = value;
-    }
+    operators.includes(value) ? mainScreen.innerHTML += value : mainScreen.innerHTML = value;
   } else if (mainScreen.innerHTML.substr(mainScreen.innerHTML.length - 4) == ".e+0") {
-    if (operators.includes(value)) {
-      mainScreen.innerHTML = mainScreen.innerHTML;
-    } else {
-      mainScreen.innerHTML = mainScreen.innerHTML.slice(0, -1) + value;
-    }
-  }  
-    else {
-    if (validateInput(value) && mainScreen.innerHTML != "") {
-      mainScreen.innerHTML += value;
-    } else {
-      mainScreen.innerHTML = mainScreen.innerHTML.slice(0, -1) + value;
-    }
+    operators.includes(value) ? mainScreen.innerHTML = mainScreen.innerHTML : 
+    mainScreen.innerHTML = mainScreen.innerHTML.slice(0, -1) + value;
+  } else {
+    validateInput(value) && mainScreen.innerHTML != "" ? mainScreen.innerHTML += value :  
+    mainScreen.innerHTML = mainScreen.innerHTML.slice(0, -1) + value;
   }
 }
 
@@ -47,7 +36,7 @@ function calculator() {
   try {
     if (mainScreen.innerHTML != "" && !operators.includes(mainScreen.innerHTML.substr(mainScreen.innerHTML.length - 1))) {
       if (mainScreen.innerHTML.includes("^")) {
-        const findXYSqaure = mainScreen.innerHTML.split("^", 2);
+        let findXYSqaure = mainScreen.innerHTML.split("^", 2);
         childScreen.innerHTML = mainScreen.innerHTML;
         displayOutput(Math.pow(findXYSqaure[0], findXYSqaure[1]));
       } else {
@@ -83,7 +72,7 @@ function clearEntry() {
 }
 
 function fixedToExponent() {
-  var lastFourEntry = mainScreen.innerHTML.substr(mainScreen.innerHTML.length - 4);
+  let lastFourEntry = mainScreen.innerHTML.substr(mainScreen.innerHTML.length - 4);
   let lastEntry = mainScreen.innerHTML.slice(-1);
   if (lastEntry == ".") {
     mainScreen.innerHTML += "e+0";
@@ -136,7 +125,7 @@ function getFactorial() {
   } else if (factorialNumber == 0) {
     mainScreen.innerHTML = "1";
   } else {
-    for (var i = factorialNumber - 1; i >= 1; i--) {
+    for (let i = factorialNumber - 1; i >= 1; i--) {
       factorialNumber *= i;
     }
     childScreen.innerHTML = `fact(${mainScreen.innerHTML})`;
@@ -186,8 +175,8 @@ function getPower(clickedId) {
 function getLog(clickedId) {
   switch (clickedId) {
     case "logTenBase":
-        childScreen.innerHTML = `log(${mainScreen.innerHTML})`;
-        displayOutput(Math.log10(mainScreen.innerHTML));
+      childScreen.innerHTML = `log(${mainScreen.innerHTML})`;
+      displayOutput(Math.log10(mainScreen.innerHTML));
       break;
     case "naturalLogarithm":
       childScreen.innerHTML = `ln(${mainScreen.innerHTML})`;
@@ -228,17 +217,26 @@ function enableButton(){
     memoryRecallElement.setAttribute("class", "btn");
 } 
 
+function getMemoryItem(){
+  let storedMemoryData = JSON.parse(localStorage.getItem(localMemory));
+  return storedMemoryData;
+}
+
+function setMemoryItem(storedMemoryData){
+  localStorage.setItem(localMemory, JSON.stringify(storedMemoryData));
+}
+
 //Memory Operations Start
 function memoryStore() {
-  const storedMemoryData = JSON.parse(localStorage.getItem(localMemory));
+  let storedMemoryData = getMemoryItem();
   if (mainScreen.innerHTML != "") {
     if (storedMemoryData != null) {
       storedMemoryData.push(mainScreen.innerHTML);
-      localStorage.setItem(localMemory, JSON.stringify(storedMemoryData));
+      setMemoryItem(storedMemoryData);
       enableButton();
     } else {
       memoryItems.push(mainScreen.innerHTML);
-      localStorage.setItem(localMemory, JSON.stringify(memoryItems));
+      setMemoryItem(memoryItems);
       enableButton();
     }
   }
@@ -264,30 +262,29 @@ function memoryPlusSubtract(clickedId) {
 }
 
 function memoryPlusSub(operators){
-  const storedMemoryData = JSON.parse(localStorage.getItem(localMemory));
+  let storedMemoryData = getMemoryItem();
   if (storedMemoryData != null) {
       let lastItems = storedMemoryData.length - 1;
       let replaceData = eval(storedMemoryData[lastItems] + operators + mainScreen.innerHTML);
       storedMemoryData[lastItems] = replaceData;
-      localStorage.setItem(localMemory, JSON.stringify(storedMemoryData));
+      setMemoryItem(storedMemoryData);
   } else {
     return false;
   }
 }
 
 function memoryRecall() {
-  let retrievedMemoryData = localStorage.getItem(localMemory);
-  let memoryData = JSON.parse(retrievedMemoryData);
-  mainScreen.innerHTML = memoryData[memoryData.length - 1];
+  let storedMemoryData = getMemoryItem();
+  mainScreen.innerHTML = storedMemoryData[storedMemoryData.length - 1];
 }
 
 function checkMemory() {
-    const storedMemoryData = JSON.parse(localStorage.getItem(localMemory));
-    if(storedMemoryData == null) {
-        disableButton();
-    } else {
-       enableButton();
-    }
+  let storedMemoryData = getMemoryItem();
+  if(storedMemoryData == null) {
+    disableButton();
+  } else {
+    enableButton();
+  }
 }
 //Memory Operations End
 
