@@ -16,6 +16,9 @@ function displayEntry(value) {
   } else if (mainScreen.innerHTML.substr(mainScreen.innerHTML.length - 4) == ".e+0") {
     operators.includes(value) ? mainScreen.innerHTML = mainScreen.innerHTML : 
     mainScreen.innerHTML = mainScreen.innerHTML.slice(0, -1) + value;
+  } else if(mainScreen.innerHTML == Math.PI ||mainScreen.innerHTML == Math.E ){
+    operators.includes(value) ? mainScreen.innerHTML += value : 
+    mainScreen.innerHTML = value;
   } else {
     validateInput(value) && mainScreen.innerHTML != "" ? mainScreen.innerHTML += value :  
     mainScreen.innerHTML = mainScreen.innerHTML.slice(0, -1) + value;
