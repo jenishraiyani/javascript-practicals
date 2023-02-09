@@ -11,7 +11,7 @@ let productDescription = document.getElementById("product-description");
 let displayImage = document.getElementById("display-image");
 let formModal = document.getElementById("form-modal");
 let specialChars = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,<>\/?~\\++]/;
-var productData = JSON.parse(localStorage.getItem(productDetails));
+let productData = JSON.parse(localStorage.getItem(productDetails));
 viewProduct();
 
 function formData() {
