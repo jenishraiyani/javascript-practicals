@@ -121,10 +121,10 @@
           <button type="button" class="btn w-100 btn-light" onclick="getPower(this.id)" id="findXRoot"> 2<i class="fa-solid fa-square-root-variable"></i></button>
         </div>
         <div class="col">
-          <button type="button" class="btn w-100 btn-light" onclick="displayEntry('(')">(</button>
+          <button type="button" class="btn w-100 btn-light" onclick="openParenthesis('(')"><span id="parenthesis-counter"></span>(</button>
         </div>
         <div class="col">
-          <button type="button" class="btn w-100 btn-light" onclick="displayEntry(')')">)</button>
+          <button type="button" class="btn w-100 btn-light" onclick="closeParenthesis(')')">)</button>
         </div>
         <div class="col">
           <button type="button" class="btn w-100 btn-light" onclick="getFactorial()"><em>n</em>!</button>

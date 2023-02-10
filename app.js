@@ -7,18 +7,25 @@ let operators = ["%", "+", "-", "*", "/", ".", "^", ".e+0"];
 let errorMsg = "Please enter valid input";
 let memoryItems = [];
 let localMemory = "calcmemory";
+let openParenthesisCounter = 0;
+let closeParenthesisCounter = 0;
+let parenthesis = document.getElementById("parenthesis-counter");
 checkMemory();
 
 // Display user input on screen
 function displayEntry(value) {
+  let lastEntry = mainScreen.innerHTML.slice(-1);
   if (mainScreen.innerHTML == "0" && value != ".") {
     operators.includes(value) ? mainScreen.innerHTML += value : mainScreen.innerHTML = value;
   } else if (mainScreen.innerHTML.substr(mainScreen.innerHTML.length - 4) == ".e+0") {
     operators.includes(value) ? mainScreen.innerHTML = mainScreen.innerHTML : 
     mainScreen.innerHTML = mainScreen.innerHTML.slice(0, -1) + value;
-  } else if(mainScreen.innerHTML == Math.PI ||mainScreen.innerHTML == Math.E ){
+  } else if(mainScreen.innerHTML == Math.PI || mainScreen.innerHTML == Math.E){
     operators.includes(value) ? mainScreen.innerHTML += value : 
     mainScreen.innerHTML = value;
+  } else if(lastEntry == "("){
+    validateInput(value) && mainScreen.innerHTML != "" ? mainScreen.innerHTML += "0"+ value :  
+    mainScreen.innerHTML = mainScreen.innerHTML.slice(0, -1) + value;
   } else {
     validateInput(value) && mainScreen.innerHTML != "" ? mainScreen.innerHTML += value :  
     mainScreen.innerHTML = mainScreen.innerHTML.slice(0, -1) + value;
@@ -31,6 +38,35 @@ function displayOutput(value){
     mainScreen.innerHTML = "0";
   }else{
     mainScreen.innerHTML = value;
+  }
+}
+
+function openParenthesis(){
+  if(!isNaN(mainScreen.innerHTML)){
+    mainScreen.innerHTML += "*(";
+  }else{
+    mainScreen.innerHTML += "(";
+  }
+  openParenthesisCounter++;
+  parenthesis.innerHTML = openParenthesisCounter;
+}
+
+function closeParenthesis(){
+  if (openParenthesisCounter > 0) {
+    let lastEntry = mainScreen.innerHTML.slice(-1);
+    if (closeParenthesisCounter == 0 && lastEntry == "(") {
+      mainScreen.innerHTML += "0)";
+    } else {
+      mainScreen.innerHTML += ")";  
+    }
+    openParenthesisCounter--;
+    closeParenthesisCounter++;
+    parenthesis.innerHTML = openParenthesisCounter;
+    if (openParenthesisCounter == 0) {
+        closeParenthesisCounter = 0;
+        mainScreen.innerHTML += "*";
+        parenthesis.innerHTML = "";
+    }
   }
 }
 
@@ -59,6 +95,8 @@ function calculator() {
 function allClear() {
   mainScreen.innerHTML = "0";
   childScreen.innerHTML = "";
+  parenthesis.innerHTML = "";
+  openParenthesisCounter = 0;
 }
 
 //Remove last entry
@@ -68,8 +106,21 @@ function clearEntry() {
   } else {
     if (mainScreen.innerHTML.length == 1) {
       mainScreen.innerHTML = "0";
+      parenthesis.innerHTML = "";
+      openParenthesisCounter = 0;
     } else {
-      mainScreen.innerHTML = mainScreen.innerHTML.slice(0, -1);
+      let lastEntry = mainScreen.innerHTML.slice(-1);
+      if(lastEntry == "("){
+        openParenthesisCounter--;
+        parenthesis.innerHTML = openParenthesisCounter;
+        mainScreen.innerHTML = mainScreen.innerHTML.slice(0, -1);
+      } else if(lastEntry == ")"){
+        openParenthesisCounter++;
+        parenthesis.innerHTML = openParenthesisCounter;
+        mainScreen.innerHTML = mainScreen.innerHTML.slice(0, -1);
+      } else {
+        mainScreen.innerHTML = mainScreen.innerHTML.slice(0, -1);
+      }
     }
   }
 }
@@ -79,10 +130,9 @@ function fixedToExponent() {
   let lastEntry = mainScreen.innerHTML.slice(-1);
   if (lastEntry == ".") {
     mainScreen.innerHTML += "e+0";
-  }else if(operators.includes(lastEntry)){
+  } else if(operators.includes(lastEntry)){
     mainScreen.innerHTML = mainScreen.innerHTML;
-  }
-  else if (lastFourEntry != ".e+0") {
+  } else if (lastFourEntry != ".e+0") {
     mainScreen.innerHTML += ".e+0";
   } else {
     mainScreen.innerHTML = mainScreen.innerHTML;
@@ -106,7 +156,7 @@ function getDerivative() {
     showError(msg);
   } else {
     childScreen.innerHTML = `1/(${mainScreen.innerHTML})`;
-    displayOutput(eval(1 / mainScreen.innerHTML));
+    displayOutput(eval(1/mainScreen.innerHTML));
   }
 }
 
@@ -140,31 +190,31 @@ function getPower(clickedId) {
   switch (clickedId) {
     case "findSquare":
       childScreen.innerHTML = `sqr(${mainScreen.innerHTML})`;
-      displayOutput(Math.pow(mainScreen.innerHTML, 2));
+      displayOutput(Math.pow(mainScreen.innerHTML,2));
       break;
     case "findXRoot":
       childScreen.innerHTML = `√(${mainScreen.innerHTML})`;
-      displayOutput(Math.pow(mainScreen.innerHTML, 1 / 2));
+      displayOutput(Math.pow(mainScreen.innerHTML,1/2));
       break;
     case "findTenPower":
       childScreen.innerHTML = `10^(${mainScreen.innerHTML})`;
-      displayOutput(Math.pow(10, mainScreen.innerHTML));
+      displayOutput(Math.pow(10,mainScreen.innerHTML));
       break;
     case "findXCube":
       childScreen.innerHTML = `cube(${mainScreen.innerHTML})`;
-      displayOutput(Math.pow(mainScreen.innerHTML, 3));
+      displayOutput(Math.pow(mainScreen.innerHTML,3));
       break;
     case "findCubeRoot":
       childScreen.innerHTML = `cuberoot(${mainScreen.innerHTML})`;
-      displayOutput(Math.pow(mainScreen.innerHTML, 1 / 3));
+      displayOutput(Math.pow(mainScreen.innerHTML,1/3));
       break;
     case "findTwoXSquare":
       childScreen.innerHTML = `2^(${mainScreen.innerHTML})`;
-      displayOutput(Math.pow(2, mainScreen.innerHTML));
+      displayOutput(Math.pow(2,mainScreen.innerHTML));
       break;
     case "findEulerXSquare":
       childScreen.innerHTML = `e^(${mainScreen.innerHTML})`;
-      displayOutput(Math.pow(Math.E, mainScreen.innerHTML));
+      displayOutput(Math.pow(Math.E,mainScreen.innerHTML));
       break;
     case "findXYSqaure":
       let exponent = "^";
@@ -232,7 +282,7 @@ function setMemoryItem(storedMemoryData){
 //Memory Operations Start
 function memoryStore() {
   let storedMemoryData = getMemoryItem();
-  if (mainScreen.innerHTML != "") {
+  if (mainScreen.innerHTML != "" && !isNaN(mainScreen.innerHTML)) {
     if (storedMemoryData != null) {
       storedMemoryData.push(mainScreen.innerHTML);
       setMemoryItem(storedMemoryData);
@@ -266,13 +316,21 @@ function memoryPlusSubtract(clickedId) {
 
 function memoryPlusSub(operators){
   let storedMemoryData = getMemoryItem();
-  if (storedMemoryData != null) {
-      let lastItems = storedMemoryData.length - 1;
-      let replaceData = eval(storedMemoryData[lastItems] + operators + mainScreen.innerHTML);
-      storedMemoryData[lastItems] = replaceData;
-      setMemoryItem(storedMemoryData);
+  if(storedMemoryData == null){
+   if(operators == '-'){
+    memoryItems.push(Math.abs(mainScreen.innerHTML)*-1);
+    setMemoryItem(memoryItems);
+    enableButton();
+   } else {
+    memoryItems.push(Math.abs(mainScreen.innerHTML));
+    setMemoryItem(memoryItems);
+    enableButton();
+   }
   } else {
-    return false;
+    let lastItems = storedMemoryData.length - 1;
+    let replaceData = eval(storedMemoryData[lastItems] + operators + mainScreen.innerHTML);
+    storedMemoryData[lastItems] = replaceData;
+    setMemoryItem(storedMemoryData);
   }
 }
 
