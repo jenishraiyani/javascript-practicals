@@ -1,0 +1,30 @@
+.profile img {
+  width: 70%;
+  margin-top: 160px;
+}
+section {
+  height: 90vh;
+}
+.name {
+  margin-top: 300px;
+}
+.title h1 {
+  font-size: 4rem;
+}
+.subtitle p {
+  font-size: 1rem;
+}
+.about-title {
+  margin-top: 100px;
+}
+.slide img {
+  width: 55%;
+  height: 15%;
+  margin-left: 250px;
+}
+.navbar-nav li{
+  cursor: pointer;
+}
+h6 span{
+  margin-left: 2px;
+}
