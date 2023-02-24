@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <title>Products Data</title>
+</head>
+
+<body>
+  <!-- Header Started -->
+  <div class="header p-3">
+    <div class="row d-flex justify-content-center">
+      <div class="col-2">
+        <h4 class="text- link-light">Product List</h1>
+      </div>
+      <div class="col-6">
+        <input class="form-control" type="search" onkeyup="searchProduct()" placeholder="Search products by id" aria-label="Search" id="search-id">
+      </div>
+      <div class="col-2">
+        <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Sort</button>
+        <ul class="dropdown-menu" id="sortbtn">
+          <li><a class="dropdown-item" id="sort-id-ascending" onclick="sorting(this.id)">Product Id (Ascending)</a></li>
+          <li><a class="dropdown-item" id="sort-id-descending" onclick="sorting(this.id)">Product Id (Descending)</a></li>
+          <li><a class="dropdown-item" id="sort-name-az" onclick="sorting(this.id)">Product Name (A to Z)</a></li>
+          <li><a class="dropdown-item" id="sort-name-za" onclick="sorting(this.id)">Product Name (Z to A)</a></li>
+          <li><a class="dropdown-item" id="price-lh" onclick="sorting(this.id)">Price (Low -> High)</a></li>
+          <li><a class="dropdown-item" id="price-hl" onclick="sorting(this.id)">Price (High -> Low)</a></li>
+        </ul>
+        <button type="button" class="btn btn-light ms-3" id="add-product" aria-expanded="false" data-toggle="modal" data-target="#form-modal">Add Product</button>
+      </div>
+    </div>
+  </div>
+  <!-- Header Ended -->
+  <!-- Product List -->
+  <div class="container mt-2" id="product-card">
+    <div class="row row-cols-6" id="product-details"></div>
+  </div>
+  <!-- Product List Ended -->
+  <!-- Form Modal -->
+  <div class="modal fade" id="form-modal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="form-title">Add Product</h5>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal">
+            <div class="form-group row mb-3">
+              <label class="col-4 col-form-label">Product Id:</label>
+              <div class="col-8">
+                <input type="number" class="form-control" id="product-id" min="0" required>
+              </div>
+            </div>
+            <div class="form-group row mb-3">
+              <label class="col-4 col-form-label">Product Name:</label>
+              <div class="col-8">
+                <input type="text" class="form-control" id="product-name" required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-4 col-form-label">Image:</label>
+              <div class="col-8">
+                <input type="file" class="form-control-file" id="product-image" onchange="imageUrl(this)" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <img alt="" id="display-image">
+            </div>
+            <div class="form-group row mb-3">
+              <label class="col-4 col-form-label">Price:</label>
+              <div class="col-8">
+                <input type="number" class="form-control" id="product-price" min="0" required>
+              </div>
+            </div>
+            <div class="form-group row mb-3">
+              <label class="col-4 col-form-label">Description:</label>
+              <div class="col-8">
+                <textarea class="form-control" rows="1" id="product-description" required></textarea>
+              </div>
+            </div>
+            <input type="number" class="form-control" id="product-index" hidden>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="btn-operation"> </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Form Modal Ended -->
+
+  <div class="message">
+    <div class="toast bg-success" data-autohide="false">
+      <div class="toast-body text-light">
+          Product Details Updated Successfully
+      </div>
+    </div>
+  </div>
+
+  <script src="/jquery/jquery-3.6.3.min.js"></script>
+  <script src="/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
