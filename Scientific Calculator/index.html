@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+  <!-- External CSS -->
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Scientific Calculator</title>
+</head>
+
+<body>
+  <div class="message d-flex justify-content-end mt-3 me-2" id="error-message">
+       
+  </div>
+  <div class="container">
+    <div class="calculator-body mx-auto my-auto w-100 p-2 d-grid border border-dark">
+      <div class="display text-end fw-bold p-2 text-break">
+        <div class="user-input" id="child-screen"></div>
+        <div class="output " id="output-screen">0</div>
+      </div>
+      <div class="row row-cols-5 g-1 mt-1">
+        <div class="col">
+          <button type="button" class="btn fw-bold">DEG</button>
+        </div>
+        <div class="col-8">
+          <button type="button" class="btn fw-bold" onclick="fixedToExponent()">F-E</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn" id="memory-clear" onclick="memoryPlusSubtract()">MC</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn" id="memory-recall" onclick="memoryRecall()">MR</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn fw-bold" id="memory-plus" onclick="memoryPlusSubtract(this.id)">M+</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn fw-bold"  id="memory-subtract" onclick="memoryPlusSubtract(this.id)">M-</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn fw-bold" onclick="memoryStore()">MS</button>
+        </div>
+        <div class="col-6">
+          <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://img.icons8.com/ios-glyphs/30/null/trigonometry.png " />
+            Trigonometry
+          </button>
+          <ul class="dropdown-menu p-2 " aria-labelledby="btnGroupDrop1">
+           <div class="row row-cols-3 g-0">
+              <li><button type="button" class="btn w-75 btn-secondary mb-2" id="sin" onclick="getTrigonometryValue(this.id)">sin</button></li>
+              <li><button type="button" class="btn w-75 btn-secondary" id="cos" onclick="getTrigonometryValue(this.id)">cos</button></li>
+              <li><button type="button" class="btn w-75 btn-secondary" id="tan" onclick="getTrigonometryValue(this.id)">tan</button></li>
+              <li><button type="button" class="btn w-75 btn-secondary" id="sinh" onclick="getTrigonometryValue(this.id)">sinh</button></li>
+              <li><button type="button" class="btn w-75 btn-secondary" id="cosh" onclick="getTrigonometryValue(this.id)">cosh</button></li>
+              <li><button type="button" class="btn w-75 btn-secondary" id="tanh" onclick="getTrigonometryValue(this.id)">tanh</button></li>
+           </div>
+          </ul>
+        </div>
+        <div class="col-6">
+          <div class="dropdown">
+            <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="https://img.icons8.com/ios-glyphs/30/null/frequency-f.png" />
+              Function
+            </button>
+            <ul class="dropdown-menu p-2" aria-labelledby="btnGroupDrop1">
+              <div class="row row-cols-2 g-0">
+                <li><button type="button" class="btn w-75 btn-secondary mb-2" onclick="getAbsoluteValue()">|x|</button></li>
+                <li><button type="button" class="btn w-75 btn-secondary" id="rand" onclick="getMathFunctionValue(this.id)">rand</button></li>
+                <li><button type="button" class="btn w-75 btn-secondary" id="floor" onclick="getMathFunctionValue(this.id)">⌊x⌋</button></li> 
+                <li><button type="button" class="btn w-75 btn-secondary" id="ceil" onclick="getMathFunctionValue(this.id)">⌈x⌉</button></li> 
+              </div>
+            </ul>
+          </div>
+        </div>
+        <div class="col">
+          <button id="btnGroupDrop1" type="button" class="btn w-100 btn-light" data-bs-toggle="dropdown" aria-expanded="false">
+            2<sup>nd</sup>
+          </button>
+          <ul class="dropdown-menu p-2" aria-labelledby="btnGroupDrop1">
+            <li><button type="button" class="btn w-100 btn-light mb-2" onclick="getPower(this.id)" id="findXCube">x<sup>3</sup></button></li>
+            <li><button type="button" class="btn w-100 btn-light mb-2" onclick="getPower(this.id)" id="findCubeRoot"> 3<i class="fa-solid fa-square-root-variable"></i></button></li>
+            <li><button type="button" class="btn w-100 btn-light mb-2" onclick="getPower(this.id)" id="findTwoXSquare">2<sup>x</sup></button></li>
+            <li><button type="button" class="btn w-100 btn-light mb-2" onclick="getPower(this.id)" id="findEulerXSquare">e<sup>x</sup></button></li>
+          </ul>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 btn-light" onclick="getConstant(this.id)" id="PI">&#960;</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 btn-light" onclick="getConstant(this.id)" id="Euler">e</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 btn-light" onclick="allClear()">C</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 btn-light" onclick="clearEntry()">
+            <img src="https://img.icons8.com/material-outlined/24/null/clear-symbol--v1.png" />
+          </button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 btn-light" onclick="getPower(this.id)" id="findSquare">x<sup>2</sup></button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 btn-light" onclick="getDerivative()">1/x</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 btn-light" onclick="getAbsoluteValue()">|x|</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 btn-light" onclick="fixedToExponent()">exp</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 btn-light" onclick="getModulo()">mod</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 btn-light" onclick="getPower(this.id)" id="findXRoot"> 2<i class="fa-solid fa-square-root-variable"></i></button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 btn-light" onclick="openParenthesis('(')"><span id="parenthesis-counter"></span>(</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 btn-light" onclick="closeParenthesis(')')">)</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 btn-light" onclick="getFactorial()"><em>n</em>!</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 btn-light" onclick="displayEntry('/')"> <i class="fa-solid fa-divide"></i> </button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 btn-light" onclick="getPower(this.id)" id="findXYSqaure">x<sup>y</sup></button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 bg-white" onclick="displayEntry('7')">7</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 bg-white" onclick="displayEntry('8')">8</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 bg-white" onclick="displayEntry('9')">9</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 btn-light"  onclick="displayEntry('*')"><i class="fa fa-times" aria-hidden="true"></i></button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 btn-light" onclick="getPower(this.id)" id="findTenPower">10<sup>x</sup></button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 bg-white" onclick="displayEntry('4')">4</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 bg-white" onclick="displayEntry('5')">5</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 bg-white" onclick="displayEntry('6')">6</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 btn-light"  onclick="displayEntry('-')"><i class="fa fa-minus"></i></button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 btn-light" onclick="getLog(this.id)" id="logTenBase">log</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 bg-white" onclick="displayEntry('1')">1</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 bg-white" onclick="displayEntry('2')">2</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 bg-white" onclick="displayEntry('3')">3</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 btn-light" onclick="displayEntry('+')"><i class="fa fa-plus"></i></button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 btn-light" onclick="getLog(this.id)" id="naturalLogarithm">ln</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 bg-white" onclick="setPlusMinus()">+/-</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 bg-white" onclick="displayEntry('0')">0</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 bg-white" onclick="displayEntry('.')">.</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn w-100 btn-primary" onclick="calculator()"><i class="fa-solid fa-equals"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
